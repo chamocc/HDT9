@@ -15,8 +15,8 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
         Scanner stdin = new Scanner(System.in);
-        PruebaFloyd prueba;
-        prueba = new PruebaFloyd();
+        Grafo prueba;
+        prueba = new Grafo();
         
         // Pruebas fuera con algoritmo gráfico mostrado en clase.
         int[][] m = new int[5][5];
