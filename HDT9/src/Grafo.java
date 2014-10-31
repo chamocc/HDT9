@@ -35,4 +35,22 @@ public class Grafo<E> {
         cantNodos++;
     }
     
+    public void setRelacion(E saleDe, E vaA, int peso){
+        int numSale, numVa;
+        numSale=tabla.get(saleDe);
+        numVa=tabla.get(vaA);
+        
+        primeraFila.get(numVa).set(numSale, peso);
+    }
+    
+    private int[][] hacerMatriz(){
+        int[][] matriz=new int[cantNodos+1][cantNodos+1];
+        for (int i=0; i<=cantNodos; i++){
+            for (int j=0; j<=cantNodos; j++){
+                matriz[i][j]=primeraFila.get(i).get(j);
+            }
+        }
+        return matriz;
+    }
+    
 }
