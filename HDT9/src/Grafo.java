@@ -13,17 +13,23 @@ import java.util.HashMap;
  */
 public class Grafo<E> {
     private HashMap<E, Integer> tabla;
+    private HashMap<Integer, E> tablaInv;
     private ArrayList<ArrayList<Integer>> primeraFila;
-    private ArrayList<Nodo<E>>Nodos;
+    private ArrayList<Nodo<E>>nodos;
     private int cantNodos;
     
     public Grafo(){
         cantNodos=0;
+        tabla=new HashMap<E, Integer>(16, 0.4f);
+        tablaInv=new HashMap<Integer, E>(16, 0.4f);
+        primeraFila=new ArrayList<ArrayList<Integer>>();
+        nodos=new ArrayList<Nodo<E>>();
     }
     
     public void agregarNodo(E dato){
-        Nodos.add(new Nodo<E>(dato));
-        tabla.put(Nodos.get(cantNodos).getDato(), cantNodos);
+        nodos.add(new Nodo<E>(dato));
+        tabla.put(nodos.get(cantNodos).getDato(), cantNodos);
+        tablaInv.put(cantNodos, nodos.get(cantNodos).getDato());
         ArrayList<Integer> nuevaLista=new ArrayList<Integer>();
         primeraFila.add(nuevaLista);
         for (int i=0; i<=cantNodos-1;i++){
@@ -43,7 +49,7 @@ public class Grafo<E> {
         primeraFila.get(numVa).set(numSale, peso);
     }
     
-    private int[][] hacerMatriz(){
+    private int[][] hacerMatrizAdj(){
         int[][] matriz=new int[cantNodos+1][cantNodos+1];
         for (int i=0; i<=cantNodos; i++){
             for (int j=0; j<=cantNodos; j++){
@@ -53,7 +59,29 @@ public class Grafo<E> {
         return matriz;
     }
     
-    public int[][] shortestpath(int[][] adj, int[][] path) {
+    private int[][] hacerMatrizPath(){
+        int[][] path = new int[cantNodos][cantNodos];
+        int[][] m=hacerMatrizAdj();
+        // Inicializar con el vértice anterior para cada borde. -1 indica
+        // no tal vertice.
+        for (int i = 0; i < 5; i++) {
+            for (int j = 0; j < 5; j++) {
+                if (m[i][j] == 10000) {
+                    path[i][j] = -1;
+                } else {
+                    path[i][j] = i;
+                }
+            }
+        }
+
+        // Esto significa que no tiene que ir a ninguna parte para ir de i a i.
+        for (int i = 0; i < 5; i++) {
+            path[i][i] = i;
+        }
+        return path;
+    }
+    
+    public ArrayList<int[][]> shortestpath(int[][] adj, int[][] path) {
 
         int n = adj.length;
         int[][] ans = new int[n][n];
@@ -79,7 +107,10 @@ public class Grafo<E> {
         }
 
         // Devuelva la matriz camino más corto.
-        return ans;
+        ArrayList<int[][]> resultado=new ArrayList<int[][]>();
+        resultado.add(ans);
+        resultado.add(path);
+        return resultado;
     }
 
     //Copia el contenido del array b en un array. Se asume que tanto a como
@@ -102,4 +133,29 @@ public class Grafo<E> {
         }
     }
     
+    public ArrayList<E>floyd (E saleDe, E vaA){
+        int[][] path=hacerMatrizPath();
+        int[][] adj=hacerMatrizAdj();
+        int[][] resultadoPath;
+        int[][] resultadoAdj;
+        ArrayList<int[][]> lista=shortestpath(adj, path);
+        resultadoAdj=lista.get(0);
+        resultadoPath=lista.get(1);
+        
+        int sale=tabla.get(saleDe);
+        int llega=tabla.get(vaA);
+        ArrayList<Integer> resInt=new ArrayList<Integer>();
+        resInt.add(sale);
+        while(resultadoPath[llega][sale]!=0){
+            int nuevoSale=resultadoPath[llega][sale];
+            sale=nuevoSale;
+            resInt.add(nuevoSale);
+        }
+        resInt.add(llega);
+        ArrayList<E> listaFinal=new ArrayList<E>();
+        for(int i=0;i<resInt.size();i++){
+            listaFinal.add(tablaInv.get(resInt.get(i)));
+        }
+        return listaFinal;
+    }
 }
