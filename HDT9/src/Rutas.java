@@ -25,7 +25,7 @@ public class Rutas {
         ciudades.setRelacion(ciudad2, ciudad2, 10000);
     }
     
-    public String rutaMasCorta(String ciudad1, String ciudad2){
+    public void rutaMasCorta(String ciudad1, String ciudad2){
         ArrayList<String> rutaL=ciudades.floyd(ciudad2, ciudad2);
         String ruta="";
         for (int i=0; i<rutaL.size();i++){
@@ -34,6 +34,15 @@ public class Rutas {
                 ruta+="->";
             }
         }
-        return ruta;
+        System.out.println(ruta);
+    }
+    
+    public void centro(){
+        String centro=ciudades.calcularCentro();
+        System.out.println(centro);
+    }
+    
+    public void agregarCiudad(String ciudad){
+        ciudades.agregarNodo(ciudad);
     }
 }

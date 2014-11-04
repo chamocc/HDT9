@@ -1,5 +1,9 @@
 
 //import static PruebaFLoyd.shortestpath;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
@@ -13,85 +17,90 @@ import java.util.Scanner;
  * @author Ed. Chamo
  */
 public class Main {
+    static private ArrayList<String> datos=new ArrayList<String>();
+    static private Rutas ciudades=new Rutas();
     public static void main(String[] args) {
-        Scanner stdin = new Scanner(System.in);
-        Grafo prueba;
-        prueba = new Grafo();
-        
-        // Pruebas fuera con algoritmo gráfico mostrado en clase.
-        int[][] m = new int[5][5];
-        m[0][0] = 0;
-        m[0][1] = 3;
-        m[0][2] = 8;
-        m[0][3] = 10000;
-        m[0][4] = -4;
-        m[1][0] = 10000;
-        m[1][1] = 0;
-        m[1][2] = 10000;
-        m[1][3] = 1;
-        m[1][4] = 7;
-        m[2][0] = 10000;
-        m[2][1] = 4;
-        m[2][2] = 0;
-        m[2][3] = 10000;
-        m[2][4] = 10000;
-        m[3][0] = 2;
-        m[3][1] = 10000;
-        m[3][2] = -5;
-        m[3][3] = 0;
-        m[3][4] = 10000;
-        m[4][0] = 10000;
-        m[4][1] = 10000;
-        m[4][2] = 10000;
-        m[4][3] = 6;
-        m[4][4] = 0;
-
-        int[][] shortpath;
-        int[][] path = new int[5][5];
-
-        // Inicializar con el vértice anterior para cada borde. -1 indica
-        // no tal vertice.
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                if (m[i][j] == 10000) {
-                    path[i][j] = -1;
-                } else {
-                    path[i][j] = i;
-                }
+      File archivo = null;
+      FileReader fr = null;
+      BufferedReader br = null;
+      Scanner entrada=new Scanner(System.in);
+      
+      
+      try {
+         // Apertura del fichero y creacion de BufferedReader para poder
+         // hacer una lectura comoda (disponer del metodo readLine()).
+         archivo = new File (args[0]);
+         fr = new FileReader (archivo);
+         br = new BufferedReader(fr);
+ 
+         // Lectura del fichero
+         String linea;
+         int ind=0;
+         while((linea=br.readLine())!=null){
+            datos.add(linea);
+         }
+      }
+      catch(Exception e){
+         e.printStackTrace();
+      }finally{
+         // En el finally cerramos el fichero, para asegurarnos
+         // que se cierra tanto si todo va bien como si salta 
+         // una excepcion.
+         try{                    
+            if( null != fr ){   
+               fr.close();     
+            }                  
+         }catch (Exception e2){ 
+            e2.printStackTrace();
+         }
+      }
+      //termina codigo tomado dd internet
+      llenarGrafo();
+      boolean bandera=true;
+      while(bandera==true){
+            System.out.println("Ingrese Accion a realizar: \n0: Cerrar Carretera\n1: Abrir Carretera\n2: Ruta Corta\n3: Centro\n4: Terminar\n");
+            int param=entrada.nextInt();
+            entrada.nextLine();
+            String ciu1, ciu2;
+            switch(param){
+                case 0:
+                    System.out.println("Ingrese ciudad1, ciudad2");
+                    ciu1=entrada.next();
+                    entrada.nextLine();
+                    ciu2=entrada.next();
+                    ciudades.cerrarCarretera(ciu1, ciu2);
+                    break;
+                case 1:
+                    System.out.println("Ingrese ciudad1, ciudad2");
+                    ciu1=entrada.next();
+                    entrada.nextLine();
+                    ciu2=entrada.next();
+                    ciudades.cerrarCarretera(ciu1, ciu2);
+                    break;
+                case 2:
+                    System.out.println("Ingrese ciudad1, ciudad2");
+                    ciu1=entrada.next();
+                    entrada.nextLine();
+                    ciu2=entrada.next();
+                    ciudades.rutaMasCorta(ciu1, ciu2);
+                    break;
+                case 3:
+                    ciudades.centro();
+                case 4:
+                    bandera=false;
+                    break;
             }
-        }
-
-        // Esto significa que no tiene que ir a ninguna parte para ir de i a i.
-        for (int i = 0; i < 5; i++) {
-            path[i][i] = i;
-        }
-
-        shortpath = prueba.shortestpath(m, path);
-
-        // Imprime distancias más cortas.
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
-                System.out.print(shortpath[i][j] + " ");
-            }
-            System.out.println();
-        }
-
-        System.out.println("De dónde a dónde usted quiere encontrar el camino más corto?(0 to 4)");
-        int start = stdin.nextInt();
-        int end = stdin.nextInt();
-
-        // La ruta finalizará siempre en fin.
-        String myPath = end + "";
-
-        // Recorrer cada vértice anterior hasta que vuelvas a empezar.
-        while (path[start][end] != start) {
-            myPath = path[start][end] + " -> " + myPath;
-            end = path[start][end];
-        }
-
-        // Sólo tiene que añadir comienzo de nuestra cadena y de impresión.
-        myPath = start + " -> " + myPath;
-        System.out.println("Este es el camino " + myPath);
-        // TODO code application logic here
+      }
+      
     }
+    
+    public static void llenarGrafo(){
+        String[] data=new String[3];
+        ciudades=new Rutas();
+        for(int i=0;i<datos.size();i++){
+            data=datos.get(i).split(" ");
+            ciudades.abrirCarretera(data[0], data[1],2);
+        }
+    }
+    
 }

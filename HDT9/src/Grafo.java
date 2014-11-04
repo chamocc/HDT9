@@ -158,4 +158,32 @@ public class Grafo<E> {
         }
         return listaFinal;
     }
+    
+    public E calcularCentro(){
+        int[][] path=hacerMatrizPath();
+        int[][] adj=hacerMatrizAdj();
+        int[][] resultadoAdj;
+        ArrayList<int[][]> lista=shortestpath(adj, path);
+        resultadoAdj=lista.get(0);
+        
+        ArrayList<Integer> eccen=new ArrayList<Integer>();
+        int mayor=-1;
+        for (int i=0; i<cantNodos; i++){
+            for(int j=0; j<cantNodos; j++){
+                if(resultadoAdj[i][j]>mayor){
+                    mayor=resultadoAdj[i][j];
+                }
+            }
+            eccen.add(mayor);
+        }
+        mayor=-1;
+        for (int i=0; i<eccen.size(); i++){
+            if(eccen.get(i)>mayor){
+                mayor=eccen.get(i);
+            }
+        }
+        
+        E resultado=tablaInv.get(mayor);
+        return resultado;
+    }
 }
