@@ -86,6 +86,7 @@ public class Main {
                     break;
                 case 3:
                     ciudades.centro();
+                    break;
                 case 4:
                     bandera=false;
                     break;
@@ -97,8 +98,14 @@ public class Main {
     public static void llenarGrafo(){
         String[] data=new String[3];
         ciudades=new Rutas();
-        for(int i=0;i<datos.size();i++){
+        data=datos.get(0).split(" ");
+        for(int i=0; i<data.length; i++){
+            ciudades.agregarCiudad(data[i]);
+        }
+        
+        for(int i=1;i<datos.size();i++){
             data=datos.get(i).split(" ");
+            System.out.println(Integer.parseInt(data[2]));
             ciudades.abrirCarretera(data[0], data[1],2);
         }
     }

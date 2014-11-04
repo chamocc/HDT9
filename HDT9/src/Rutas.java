@@ -27,14 +27,18 @@ public class Rutas {
     
     public void rutaMasCorta(String ciudad1, String ciudad2){
         ArrayList<String> rutaL=ciudades.floyd(ciudad2, ciudad2);
-        String ruta="";
-        for (int i=0; i<rutaL.size();i++){
-            ruta+=rutaL.get(i);
-            if(i!=rutaL.size()-1){
-                ruta+="->";
+        if(rutaL==null){
+            System.out.println("No hay conexion entre las ciudades");
+        }else{
+            String ruta="";
+            for (int i=0; i<rutaL.size();i++){
+                ruta+=rutaL.get(i);
+                if(i!=rutaL.size()-1){
+                    ruta+="->";
+                }
             }
+            System.out.println(ruta);
         }
-        System.out.println(ruta);
     }
     
     public void centro(){

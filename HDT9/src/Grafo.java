@@ -28,8 +28,8 @@ public class Grafo<E> {
     
     public void agregarNodo(E dato){
         nodos.add(new Nodo<E>(dato));
-        tabla.put(nodos.get(cantNodos).getDato(), cantNodos);
-        tablaInv.put(cantNodos, nodos.get(cantNodos).getDato());
+        tabla.put(dato, cantNodos);
+        tablaInv.put(cantNodos, dato);
         ArrayList<Integer> nuevaLista=new ArrayList<Integer>();
         primeraFila.add(nuevaLista);
         for (int i=0; i<=cantNodos-1;i++){
@@ -46,13 +46,13 @@ public class Grafo<E> {
         numSale=tabla.get(saleDe);
         numVa=tabla.get(vaA);
         
-        primeraFila.get(numVa).set(numSale, peso);
+        primeraFila.get(numSale).set(numVa, peso);
     }
     
     private int[][] hacerMatrizAdj(){
-        int[][] matriz=new int[cantNodos+1][cantNodos+1];
-        for (int i=0; i<=cantNodos; i++){
-            for (int j=0; j<=cantNodos; j++){
+        int[][] matriz=new int[cantNodos][cantNodos];
+        for (int i=0; i<cantNodos; i++){
+            for (int j=0; j<cantNodos; j++){
                 matriz[i][j]=primeraFila.get(i).get(j);
             }
         }
@@ -142,15 +142,27 @@ public class Grafo<E> {
         resultadoAdj=lista.get(0);
         resultadoPath=lista.get(1);
         
+        for(int i=0; i<cantNodos; i++){
+            for(int j=0; j<cantNodos; j++){
+                System.out.print(resultadoPath[j][i]+" ");
+            }
+            System.out.println("\n");
+        }
+        
         int sale=tabla.get(saleDe);
         int llega=tabla.get(vaA);
         ArrayList<Integer> resInt=new ArrayList<Integer>();
         resInt.add(sale);
-        while(resultadoPath[llega][sale]!=0){
-            int nuevoSale=resultadoPath[llega][sale];
+        while(resultadoPath[sale][llega]!=0){
+            if(resultadoPath[sale][llega]==-1){
+                return null;
+            }
+            int nuevoSale=resultadoPath[sale][llega];
             sale=nuevoSale;
             resInt.add(nuevoSale);
         }
+        
+        
         resInt.add(llega);
         ArrayList<E> listaFinal=new ArrayList<E>();
         for(int i=0;i<resInt.size();i++){
@@ -177,13 +189,15 @@ public class Grafo<E> {
             eccen.add(mayor);
         }
         mayor=-1;
+        int indice=0;
         for (int i=0; i<eccen.size(); i++){
             if(eccen.get(i)>mayor){
                 mayor=eccen.get(i);
+                indice=i;
             }
         }
         
-        E resultado=tablaInv.get(mayor);
+        E resultado=tablaInv.get(indice);
         return resultado;
     }
 }
