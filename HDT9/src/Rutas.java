@@ -26,7 +26,7 @@ public class Rutas {
     }
     
     public void rutaMasCorta(String ciudad1, String ciudad2){
-        ArrayList<String> rutaL=ciudades.floyd(ciudad2, ciudad2);
+        ArrayList<String> rutaL=ciudades.floyd(ciudad1, ciudad2);
         if(rutaL==null){
             System.out.println("No hay conexion entre las ciudades");
         }else{

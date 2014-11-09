@@ -60,7 +60,7 @@ public class Grafo<E> {
     }
     
     private int[][] hacerMatrizPath(){
-        int[][] path = new int[cantNodos][cantNodos];
+       /* int[][] path = new int[cantNodos][cantNodos];
         int[][] m=hacerMatrizAdj();
         // Inicializar con el vértice anterior para cada borde. -1 indica
         // no tal vertice.
@@ -77,6 +77,17 @@ public class Grafo<E> {
         // Esto significa que no tiene que ir a ninguna parte para ir de i a i.
         for (int i = 0; i < 5; i++) {
             path[i][i] = i;
+        }*/
+        int[][] path = new int[cantNodos][cantNodos];
+         int[][] m=hacerMatrizAdj();
+        for(int i=0; i<cantNodos;i++){
+            for(int j=0;j<cantNodos;j++){
+                if (m[i][j] == 10000) {
+                    path[i][j] = -1;
+                } else {
+                    path[i][j] = 0;
+                }
+            }
         }
         return path;
     }
@@ -100,7 +111,7 @@ public class Grafo<E> {
 
                     if (ans[i][k] + ans[k][j] < ans[i][j]) {
                         ans[i][j] = ans[i][k] + ans[k][j];
-                        path[i][j] = path[k][j];
+                        path[i][j] = k;
                     }
                 }
             }
@@ -135,6 +146,13 @@ public class Grafo<E> {
     
     public ArrayList<E>floyd (E saleDe, E vaA){
         int[][] path=hacerMatrizPath();
+        for(int i=0; i<cantNodos; i++){
+            for(int j=0; j<cantNodos; j++){
+                System.out.print(path[j][i]+" ");
+            }
+            System.out.println("\n");
+        }
+        System.out.println("\n");
         int[][] adj=hacerMatrizAdj();
         int[][] resultadoPath;
         int[][] resultadoAdj;

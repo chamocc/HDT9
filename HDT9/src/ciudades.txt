@@ -1,5 +1,18 @@
+Guatemala Xela Huehuetenango Flores Panajachel Retalhuleu Escuintla Antigua PuertoBarrios
 Guatemala Xela 150
 Huehuetenango Guatemala 200
-Flores Guatemala 300
+Flores Guatemala 500
 Guatemala Panajachel 100
 Guatemala Retalhuleu 120
+Guatemala Escuintla 78
+Antigua Guatemala 30
+Xela Huehuetenango 100
+Antigua Retalhuleu 100
+Flores Escuintla 600
+Guatemala PuertoBarrios 150
+PuertoBarrios Xela 300
+Flores PuertoBarrios 150
+PuertoBarrios Guatemala 100
+Retalhuleu Xela 50
+Xela Panajachel 80
+Huehuetenango Flores 100
